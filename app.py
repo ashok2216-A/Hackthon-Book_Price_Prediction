@@ -97,51 +97,64 @@ from PIL import Image
 
 
 # loading in the model to predict on the data
-pickle_in = open('pickle_model.pkl', 'rb')
-classifier = pickle.load(pickle_in)
+# pickle_in = open('pickle_model.pkl', 'rb')
+# classifier = pickle.load(pickle_in)
+
+with (open('pickle_model.pkl', "rb")) as openfile:
+    while True:
+        try:
+            pickled_model = pickle.load(openfile)
+        except EOFError:
+            break
 
 def welcome():
 	return 'welcome all'
 
-# defining the function which will make the prediction using
-# the data which the user inputs
+
 def prediction(Reviews, Ratings, Genre, BookCategory, Edition_Name):
 
-	prediction = classifier.predict(
+	prediction = pickled_model.predict(
 		[[Reviews, Ratings, Genre, BookCategory, Edition_Name]])
 	print(prediction)
 	return prediction
-	
 
-# this is the main function in which we define our webpage
+
 def main():
-	# giving the webpage a title
+
 	st.title("Book Price Prediction")
-	
-	# here we define some of the front end elements of the web page like
-	# the font and background color, the padding and the text to be displayed
 	html_temp = """
-	<div style ="background-color:yellow;padding:13px">
-	<h1 style ="color:black;text-align:center;">Streamlit Iris Flower Classifier ML App </h1>
+	<div style ="background-color:gry;padding:13px">
+	<h1 style ="color:black;text-align:center;">Streamlit Book Price Prediction ML App </h1>
 	</div>
 	"""
-	
-	# this line allows us to display the front end aspects we have
-	# defined in the above code
 	st.markdown(html_temp, unsafe_allow_html = True)
-    
-    Reviews = st.slider('Select Reviews', 0, 5, 0)
-    st.write("You Selected", Reviews, 'Star')
-	EditionName = st.selectbox('How would you like to be contacted?',('Email', 'Home phone', 'Mobile phone'))
-	petal_length = st.text_input("Petal Length", "Type Here")
-	petal_width = st.text_input("Petal Width", "Type Here")
 	result =""
+	Reviews = st.slider('Select Reviews', 0, 5, 0)
+	st.write("You Selected", Reviews, 'Star')
+	EditionName = st.selectbox('How would you like to be contacted?',('Email', 'Home phone', 'Mobile phone'))
+	Ratings = st.slider('Select Ratings', 0, 1000, 0)
+	st.write("You Selected", Ratings, 'Ratings')
+	Genre = st.selectbox(
+	'How would you like to be contacted?',
+	('Ema5il', 'Hom5e phone', 'Mob5ile phone'))
+	st.write('You selected:', Genre)
+	Bookcategory = st.radio(
+	    "What's your favorite movie genre",
+	    (
+	'Action & Adventure',                     
+	'Arts, Film & Photography',                 
+	'Biographies, Diaries & True Accounts',   
+	'Comics & Mangas',                    
+	'Computing, Internet & Digital Media',     
+	'Crime, Thriller & Mystery',                
+	'Humour',                                   
+	'Language, Linguistics & Writing',          
+	'Politics',                                 
+	'Romance',                                  
+	'Sports'))
 	
-	# the below line ensures that when the button called 'Predict' is clicked,
-	# the prediction function defined above is called to make the prediction
-	# and store it in the variable result
 	if st.button("Predict"):
-		result = prediction(sepal_length, sepal_width, petal_length, petal_width)
+		result = prediction(Reviews, EditionName, Ratings, Genre, Bookcategory)
 	st.success('The output is {}'.format(result))
 	
 if __name__=='__main__':
