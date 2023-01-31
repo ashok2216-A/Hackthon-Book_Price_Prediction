@@ -97,15 +97,15 @@ from PIL import Image
 
 
 # loading in the model to predict on the data
-# pickle_in = open('pickle_model.pkl', 'rb')
-# classifier = pickle.load(pickle_in)
+pickle_in = open('treereg.pkl', 'rb')
+model = pickle.load(pickle_in)
 
-with (open('pickle_model.pkl', "rb")) as openfile:
-    while True:
-        try:
-            pickled_model = pickle.load(openfile)
-        except EOFError:
-            break
+# with (open('treereg.pkl', "rb")) as openfile:
+#     while True:
+#         try:
+#             pickled_model = pickle.load(openfile)
+#         except EOFError:
+#             break
 
 def welcome():
 	return 'welcome all'
@@ -113,7 +113,7 @@ def welcome():
 
 def prediction(Reviews, Ratings, Genre, BookCategory, Edition_Name):
 
-	prediction = pickled_model.predict(
+	prediction = model.predict(
 		[[Reviews, Ratings, Genre, BookCategory, Edition_Name]])
 	print(prediction)
 	return prediction

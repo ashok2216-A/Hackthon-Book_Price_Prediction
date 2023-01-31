@@ -1,8 +1,8 @@
-froPrepProcesorm sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.impute import SimpleImputer 
 import re
 
-class (BaseEstimator, TransformerMixin): 
+class PrepProcesor(BaseEstimator, TransformerMixin): 
     def fit(self, X, y=None): 
         self.ageImputer = SimpleImputer()
         self.ageImputer.fit(X[['Age']])        
