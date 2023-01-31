@@ -118,6 +118,18 @@ def prediction(Reviews, Ratings, Genre, BookCategory, Edition_Name):
 	print(prediction)
 	return prediction
 
+def LABEL_ENCODING(c1):
+    from sklearn import preprocessing
+    label_encoder = preprocessing.LabelEncoder()
+    df[c1]= label_encoder.fit_transform(df[c1])
+    unq = df[c1].unique()
+    return unq
+	
+LABEL_ENCODING("Reviews")
+LABEL_ENCODING("Ratings")
+LABEL_ENCODING("Genre")
+LABEL_ENCODING("BookCategory")
+LABEL_ENCODING("Edition Name")
 
 def main():
 
